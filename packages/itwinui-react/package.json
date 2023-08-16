@@ -54,23 +54,23 @@
     "ux"
   ],
   "scripts": {
-    "build": "yarn clean:build && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && yarn build:styles && yarn build:post",
+    "build": "pnpm run clean:build && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && pnpm build:styles && pnpm build:post",
     "build:styles": "vite build src/styles.js",
     "build:watch": "concurrently \"tsc -p tsconfig.cjs.json --watch\" \"tsc -p tsconfig.esm.json --watch\"",
     "build:post": "node ./scripts/postBuild.mjs",
     "clean:build": "rimraf esm && rimraf cjs",
     "clean:coverage": "rimraf coverage",
-    "clean": "rimraf .turbo && yarn clean:coverage && yarn clean:build && rimraf node_modules",
+    "clean": "rimraf .turbo && pnpm run clean:coverage && pnpm run clean:build && rimraf node_modules",
     "test": "jest",
     "test:watch": "jest --watch",
     "format": "prettier --config .prettierrc **/*.{tsx,ts,js} --ignore-path .gitignore --write",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --max-warnings=0",
-    "lint:fix": "yarn lint --fix && node ../../scripts/copyrightLinter.js --fix \"*/**/*.{js,ts,tsx}\"",
-    "dev": "yarn clean:build && concurrently \"yarn dev:esm\" \"yarn dev:cjs\" \"yarn build:styles --watch\" \"yarn dev:types\"",
+    "lint:fix": "pnpm lint --fix && node ../../scripts/copyrightLinter.js --fix \"*/**/*.{js,ts,tsx}\"",
+    "dev": "pnpm run clean:build && concurrently \"pnpm run dev:esm\" \"pnpm run dev:cjs\" \"pnpm build:styles --watch\" \"pnpm run dev:types\"",
     "dev:esm": "swc src -d esm --watch",
     "dev:cjs": "swc src -d cjs --watch -C module.type=commonjs",
     "dev:types": "concurrently \"tsc -p tsconfig.cjs.json --emitDeclarationOnly --watch --preserveWatchOutput\" \"tsc -p tsconfig.esm.json --emitDeclarationOnly --watch --preserveWatchOutput\"",
-    "dev:styles": "yarn build:styles --watch"
+    "dev:styles": "pnpm build:styles --watch"
   },
   "dependencies": {
     "@floating-ui/react": "^0.24.3",

@@ -34,7 +34,7 @@ npm install @itwin/itwinui-react
 ```
 
 ```
-yarn add @itwin/itwinui-react
+pnpm add @itwin/itwinui-react
 ```
 
 ---

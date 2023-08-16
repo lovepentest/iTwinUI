@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: 18.x
 
-      - run: yarn
-      - run: yarn build --filter=storybook
+      - run: pnpm
+      - run: pnpm build --filter=storybook
 
       - name: Host storybook under /react
         uses: JamesIves/github-pages-deploy-action@v4

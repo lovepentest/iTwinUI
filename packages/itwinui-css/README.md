@@ -40,10 +40,10 @@ Install both packages:
 npm install @itwin/itwinui-css @itwin/itwinui-variables
 ```
 
-or if using yarn:
+or if using pnpm:
 
 ```
-yarn add @itwin/itwinui-css @itwin/itwinui-variables
+pnpm add @itwin/itwinui-css @itwin/itwinui-variables
 ```
 
 ---

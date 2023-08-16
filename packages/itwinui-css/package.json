@@ -57,12 +57,12 @@
     "vite": "^4.1.5"
   },
   "scripts": {
-    "build": "yarn clean && yarn build:css && node ../../scripts/copyrightLinter.js --fix css/* && yarn build:html",
+    "build": "pnpm run clean && pnpm build:css && node ../../scripts/copyrightLinter.js --fix css/* && pnpm build:html",
     "build:css": "node ./scripts/generateCss.js src css",
     "build:html": "vite build backstop/tests --config vite.config.ts",
     "build:watch:scss": "node ./scripts/watchScss.mjs",
     "clean": "rimraf ./css ./scss ./backstop/results/bitmaps_test",
-    "dev": "concurrently -n scss,html -k \"yarn build:watch:scss\" \"yarn vite backstop/tests --config vite.config.ts\"",
+    "dev": "concurrently -n scss,html -k \"pnpm build:watch:scss\" \"pnpm vite backstop/tests --config vite.config.ts\"",
     "preview": "serve backstop/minified -p 3050",
     "lint": "stylelint \"src/**/*.scss\"",
     "approve": "backstop --config=./backstop/backstop.js approve",

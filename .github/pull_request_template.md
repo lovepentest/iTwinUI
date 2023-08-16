@@ -17,7 +17,7 @@ Mention anything that could be helpful for reviewers and include screenshots for
 <!--
 How did you test your changes?
 If your PR has visual changes, then make sure they are demonstrated in html test pages as well as
-storybook, then approve visual test images for both (`yarn approve:css` and `yarn approve:react`).
+storybook, then approve visual test images for both (`pnpm approve:css` and `pnpm approve:react`).
 
 If not applicable, you can write "N/A".
 -->
@@ -26,7 +26,7 @@ If not applicable, you can write "N/A".
 
 <!--
 If your PR includes user-facing changes, then update docs in all places (JSDoc, website, stories, etc).
-Make sure to include a changeset (`yarn changeset`).
+Make sure to include a changeset (`pnpm changeset`).
 
 If not applicable, you can write "N/A".
 -->

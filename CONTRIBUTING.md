@@ -18,7 +18,7 @@ To clone and build iTwinUI, you'll need [Git](https://git-scm.com), [Node 18+](h
 
 1. [Create a local clone](https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository) of your forked repository. You can do this from the command line or using the Github Desktop app.
 2. Go to the directory where you cloned iTwinUI. e.g. `cd iTwinUI`.
-3. Run `yarn install` from that directory.
+3. Run `pnpm install` from that directory.
 
 ### VSCode Users
 
@@ -30,15 +30,15 @@ Install the recommended [plugins](./.vscode/extensions.json) for linter warnings
 
 ### To build
 
-`yarn build`
+`pnpm build`
 
 ### To open development servers
 
-`yarn dev`
+`pnpm run dev`
 
 ### To run all unit tests and visual tests
 
-`yarn test`
+`pnpm test`
 
 _Before running this command, make sure Docker is running. See [Visual testing](#visual-testing-css) (CSS and React) sections below for more details._
 
@@ -52,23 +52,23 @@ _Before running this command, make sure Docker is running. See [Visual testing](
 
 ### Monorepo overview
 
-We use [Turborepo](https://turborepo.org/) as our monorepo tool to improve the experience of [yarn workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/). It allows running commands in parallel and caches build outputs.
+We use [Turborepo](https://turborepo.org/) as our monorepo tool to improve the experience of [pnpm workspaces](https://classic.pnpmpkg.com/lang/en/docs/workspaces/). It allows running commands in parallel and caches build outputs.
 
 The root package.json includes a few commands that use `turbo run` to run the corresponding command in all workspaces.
 
 e.g. to build all workspaces together, run the following command from the root:
 
 ```
-yarn build
+pnpm build
 ```
 
-If you only need to run this task for a specific workspace, you can specify turborepo's `--filter` argument. For example, if you only want to build itwinui-react, you could run `yarn build --filter=itwinui-react`. Note that this will automatically run `build` for any dependencies (e.g. `itwinui-css` and `itwinui-variables`). You can see the pipeline in the `turbo.json` file.
+If you only need to run this task for a specific workspace, you can specify turborepo's `--filter` argument. For example, if you only want to build itwinui-react, you could run `pnpm build --filter=itwinui-react`. Note that this will automatically run `build` for any dependencies (e.g. `itwinui-css` and `itwinui-variables`). You can see the pipeline in the `turbo.json` file.
 
 #### Development environment
 
 To start the development server for all workspaces, run the following command from the root.
 ```
-yarn dev
+pnpm run dev
 ```
 
 This will automatically build anything that's not already built, and run the `dev` script for every workspace in parallel, watching for file changes.
@@ -86,24 +86,24 @@ By default, a portal will be opened containing links to all the different dev se
 If a script is not available in the root package.json or if you need to pass workspace-specific cli args, then you can specify the workspace as follows:
 ```
 # passing Alert as a cli arg to the `test` command in itwinui-react
-yarn workspace @itwin/itwinui-react test Alert
+pnpm workspace @itwin/itwinui-react test Alert
 ```
 
 ...or you can simply run the command normally from inside the workspace folder instead of the monorepo root.
 ```
 # run this from inside packages/itwinui-react/ for the same result
-yarn test Alert
+pnpm test Alert
 ```
 
 Note that this bypasses the turborepo pipeline, so you will need to manually run any dependent tasks first. For example, if the `build` command of `storybook` relies on the `build` command of `@itwin/itwinui-react`, then you will need to manually run the `build` commands in the right order.
 ```
-yarn workspace @itwin/itwinui-react build
-yarn workspace storybook build
+pnpm workspace @itwin/itwinui-react build
+pnpm workspace storybook build
 ```
 
 This is why it's recommended to use the turbo `--filter` syntax whenever possible.
 ```
-yarn build --filter=storybook
+pnpm build --filter=storybook
 ```
 
 ---
@@ -114,7 +114,7 @@ Before developing, please read our [style guide](./STYLEGUIDE.md).
 
 If you are creating a new component, use this script:
 
-`yarn createComponent`
+`pnpm createComponent`
 
 It ensures all needed imports are added and files are created.
 
@@ -250,7 +250,7 @@ More examples can be found in the [style guide](./STYLEGUIDE.md).
 
 Each component has a corresponding jest test inside of its directory. Be sure to cover your added code with tests.
 
-Use `yarn test` to run the tests. Add `--watch` flag if you want tests to rerun after changes.
+Use `pnpm test` to run the tests. Add `--watch` flag if you want tests to rerun after changes.
 
 We usually do not use `describe` block and our test case should start with 'should'.
 
@@ -276,9 +276,9 @@ For running tests you will need [Docker](https://www.docker.com/products/docker-
 
 - Make sure Docker is running.
 - To run tests for a specific component, use this command:
-  `yarn workspace itwinui-css test --filter=[component_name]` (e.g. `yarn workspace itwinui-css test --filter=side-navigation`)
-- To approve test images, run `yarn approve:css`.
-- To delete old/unused tests images, run `yarn clean:images`.
+  `pnpm workspace itwinui-css test --filter=[component_name]` (e.g. `pnpm workspace itwinui-css test --filter=side-navigation`)
+- To approve test images, run `pnpm approve:css`.
+- To delete old/unused tests images, run `pnpm run clean:images`.
 
 #### How to write tests:
 
@@ -314,9 +314,9 @@ We reuse our stories for visual tests by taking screenshots of the story iframes
 #### Running visual tests
 
 1. Make sure you have [Docker](https://www.docker.com/get-started) installed and running.
-2. From the monorepo root, run `yarn test --filter=storybook`. This will build storybook and run all cypress tests in docker.
-   -  If you only need to run tests for a specific component, you can do so by passing the `--spec` argument to cypress. e.g. for testing `Alert`, you can run `yarn workspace storybook test --spec="**/Alert.*"`. Don't forget to build storybook first (yarn build --filter=storybook).
-3. Once the tests finish running, you can approve any failing test images using `yarn approve:react`.
+2. From the monorepo root, run `pnpm test --filter=storybook`. This will build storybook and run all cypress tests in docker.
+   -  If you only need to run tests for a specific component, you can do so by passing the `--spec` argument to cypress. e.g. for testing `Alert`, you can run `pnpm workspace storybook test --spec="**/Alert.*"`. Don't forget to build storybook first (pnpm build --filter=storybook).
+3. Once the tests finish running, you can approve any failing test images using `pnpm approve:react`.
 
 #### Writing visual tests
 
@@ -358,11 +358,11 @@ We use an automated script to evaluate each component example for accessibility 
 
 In the terminal: 
 
-- Run the command `yarn test --filter=a11y` to run automated accessibility tests for all examples.
+- Run the command `pnpm test --filter=a11y` to run automated accessibility tests for all examples.
 
 In the Cypress GUI:
 
-1. From the monorepo root, run `yarn workspace a11y open`. This will open the Cypress control panel where you can run the tests.
+1. From the monorepo root, run `pnpm workspace a11y open`. This will open the Cypress control panel where you can run the tests.
 2. Choose a browser to evaluate your tests through, then press the `Start Component Testing in [YourBrowser]` button below.
 3. Select `Component.cy.tsx` to run the script that tests all of the component examples.
 
@@ -391,7 +391,7 @@ To enable us to quickly review and accept your pull requests, always create one 
 - Tests added for all new code.
   - All existing and new tests should pass.
 - Stories added to demonstrate new features.
-- Added [changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) using `yarn changeset`, if changes are user-facing.
+- Added [changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) using `pnpm changeset`, if changes are user-facing.
 
 Verify that your changes are ready, then [create a pull request from your fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork). Make sure your pull request has a proper description and a [linked issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 

@@ -31,10 +31,10 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
       - if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn
+        run: pnpm
 
   install-windows:
     name: Install node modules (windows)
@@ -57,15 +57,15 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - name: yarn
+      - name: pnpm
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
           max_attempts: 3
-          command: yarn
+          command: pnpm
 
   audit:
     name: Audit node modules
@@ -89,9 +89,9 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - run: yarn audit
+      - run: pnpm audit
 
   build:
     name: Build and lint packages
@@ -118,11 +118,11 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - run: yarn lint
-      - run: yarn lint:copyright
-      - run: yarn build --filter="{./packages/*}..."
+      - run: pnpm lint
+      - run: pnpm lint:copyright
+      - run: pnpm build --filter="{./packages/*}..."
 
   apps:
     name: Build website and playgrounds
@@ -146,9 +146,9 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - run: yarn build --filter=website --filter="{./playgrounds/*}..."
+      - run: pnpm build --filter=website --filter="{./playgrounds/*}..."
 
   deploy-gh-pages:
     name: Push static files to github pages
@@ -178,16 +178,16 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
       - name: Build html test pages
-        run: yarn build --filter=itwinui-css
+        run: pnpm build --filter=itwinui-css
 
       - name: Build portal
-        run: yarn workspace portal build --base "/iTwinUI/${{ env.base_folder }}"
+        run: pnpm workspace portal build --base "/iTwinUI/${{ env.base_folder }}"
 
       - name: Build storybook
-        run: yarn build --filter=storybook
+        run: pnpm build --filter=storybook
 
       - name: List folders to preserve (open PRs and 'dev')
         id: clean_exclude_folders
@@ -267,9 +267,9 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - run: yarn workspace @itwin/itwinui-react test --coverage
+      - run: pnpm workspace @itwin/itwinui-react test --coverage
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1.16
@@ -302,15 +302,15 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - name: yarn test --filter=itwinui-css
+      - name: pnpm test --filter=itwinui-css
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
           max_attempts: 2
           retry_on: timeout
-          command: yarn test --filter=itwinui-css
+          command: pnpm test --filter=itwinui-css
 
       - name: Publish test results artifact
         if: failure()
@@ -342,9 +342,9 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - run: yarn test --filter=storybook
+      - run: pnpm test --filter=storybook
 
       - name: Publish test results artifact
         if: failure()
@@ -375,12 +375,12 @@ jobs:
             packages/*/node_modules
             apps/*/node_modules
             playgrounds/*/node_modules
-          key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm.lock') }}
 
-      - run: yarn build --filter=itwinui-react
+      - run: pnpm build --filter=itwinui-react
 
       - uses: cypress-io/github-action@v5
         with:
           working-directory: testing/a11y
           component: true
-          install-command: yarn
+          install-command: pnpm
