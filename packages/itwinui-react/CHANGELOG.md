@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0-dev.8
+
+### Patch Changes
+
+- [#1495](https://github.com/iTwin/iTwinUI/pull/1495): Added accessible name to dropdown menu button in HeaderSplitButton.
+- [#1496](https://github.com/iTwin/iTwinUI/pull/1496): Added accessible button name to SideNavigation expand button.
+- [#1505](https://github.com/iTwin/iTwinUI/pull/1505): Gave accessible label to the sub-row toggle in <Table>.
+
 ## 3.0.0-dev.7
 
 ### Major Changes
